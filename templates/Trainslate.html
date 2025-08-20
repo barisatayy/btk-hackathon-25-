@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang=tr>
+<head>
+    <meta charset=UTF-8>
+    <title>Trainslate - Akıllı Çeviri</title>
+    <style>:root {
+        --primary: #6e48aa;
+        --secondary: #9d50bb;
+        --dark: #1a1a2e;
+        --light: #f1f1f1;
+        --accent: #ff7b54;
+        --text-gradient-1: #edeaf3;
+        --text-gradient-2: #8c8c91;
+        --text-gradient-3: #fff;
+        --text-gradient-4: #c9d6ff;
+        --transparent-white-1: rgba(255, 255, 255, 0.1);
+        --transparent-white-2: rgba(255, 255, 255, 0.2);
+        --transparent-white-3: rgba(255, 255, 255, 0.5);
+        --transparent-white-4: rgba(255, 255, 255, 0.7);
+        --transparent-dark-1: rgba(26, 26, 46, 0.6);
+        --transparent-dark-2: rgba(26, 26, 46, 0.8);
+        --transparent-primary-1: rgba(110, 72, 170, 0.8);
+        --transparent-primary-2: rgba(157, 80, 187, 0.9);
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --shadow-accent: rgba(0, 0, 0, 0.2);
+        --correct: #28a745;
+        --incorrect: #dc3545
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        margin: 0;
+        color: var(--light);
+        overflow-x: hidden;
+        width: 100%
+    }
+
+    .header {
+        grid-column: 1/-1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--transparent-primary-1), var(--transparent-primary-2));
+        z-index: 1000;
+        box-shadow: 0 2px 10px var(--shadow-color);
+        position: relative
+    }
+
+    .header-right {
+        position: absolute;
+        right: 1rem;
+        top: 3rem
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        background: linear-gradient(to right, var(--text-gradient-3), var(--text-gradient-4));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: flex;
+        align-items: center;
+        gap: 1rem
+    }
+
+    .nav-bar {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem
+    }
+
+    .nav-bar a {
+        color: #fff;
+        text-decoration: none;
+        padding: .5rem 1rem;
+        border-radius: 20px;
+        transition: all .3s ease;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        height: 40px
+    }
+
+    .nav-bar a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform .3s ease
+    }
+
+    .nav-bar a:hover {
+        background: var(--transparent-white-1)
+    }
+
+    .nav-bar a:hover::before {
+        transform: scaleX(1);
+        transform-origin: left
+    }
+
+    .nav-bar a.active {
+        background: var(--transparent-white-2)
+    }
+
+    .Btn {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition-duration: .3s;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, .199);
+        background-color: #ff4141
+    }
+
+    .sign {
+        width: 100%;
+        transition-duration: .3s;
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+
+    .sign svg {
+        width: 17px
+    }
+
+    .sign svg path {
+        fill: white
+    }
+
+    .Btn:hover {
+        width: 150px;
+        border-radius: 40px;
+        transition-duration: .3s
+    }
+
+    .Btn:hover .sign {
+        width: 30%;
+        transition-duration: .3s;
+        padding-left: 20px
+    }
+
+    .text {
+        position: absolute;
+        left: 100%;
+        transform: translateX(0);
+        width: auto;
+        opacity: 0;
+        color: #fff;
+        font-size: 1.2em;
+        font-weight: 600;
+        transition-duration: .3s;
+        white-space: nowrap
+    }
+
+    .Btn:hover .text {
+        left: 30%;
+        width: auto;
+        opacity: 1;
+        transform: translateX(0);
+        padding-right: 15px
+    }
+
+    .Btn:active {
+        transform: translate(2px, 2px)
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: var(--dark);
+        min-width: 160px;
+        box-shadow: 0 8px 16px var(--shadow-accent);
+        z-index: 1;
+        border-radius: 8px;
+        overflow: hidden
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        height: auto
+    }
+
+    .dropdown-content a:hover {
+        background: var(--transparent-primary-1)
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block
+    }
+
+    .dropdown-toggle::after {
+        content: ' ▼';
+        font-size: .8em;
+        margin-left: 4px
+    }
+
+    .translate-container {
+        display: grid;
+        grid-template-columns:1fr 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        margin-top: 2rem
+    }
+
+    .panel {
+        background: var(--transparent-dark-1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px var(--shadow-color);
+        display: flex;
+        flex-direction: column
+    }
+
+    .panel h2 {
+        margin-top: 0;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: .5rem;
+        margin-bottom: 1rem
+    }
+
+    .panel textarea, .panel-output {
+        width: 100%;
+        height: 40vh;
+        background: var(--transparent-dark-2);
+        border: 1px solid var(--transparent-white-3);
+        border-radius: 10px;
+        padding: 1rem;
+        color: var(--light);
+        font-size: 1.1rem;
+        resize: none;
+        box-sizing: border-box
+    }
+
+    .panel textarea:focus {
+        outline: 2px solid var(--accent);
+        border-color: transparent
+    }
+
+    .panel-output {
+        white-space: pre-wrap;
+        overflow-y: auto
+    }
+
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem
+    }
+
+    .options-container {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap
+    }
+
+    .level-selector {
+        transition: opacity .3s
+    }
+
+    .level-selector select {
+        padding: .6rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--transparent-white-3);
+        background-color: var(--transparent-dark-2);
+        color: var(--light);
+        font-size: 1rem;
+        cursor: pointer
+    }
+
+    .level-selector.disabled {
+        opacity: .5;
+        pointer-events: none
+    }
+
+    .academic-selector {
+        display: flex;
+        align-items: center;
+        gap: .75rem
+    }
+
+    .academic-selector label {
+        font-size: 1rem
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 28px
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #3c3c5c;
+        transition: .4s;
+        border-radius: 28px
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
+        background-color: #fff;
+        transition: .4s;
+        border-radius: 50%
+    }
+
+    input:checked + .slider {
+        background-color: var(--accent)
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(22px)
+    }
+
+    .info-container {
+        position: relative;
+        display: flex;
+        align-items: center
+    }
+
+    .info-icon {
+        margin-left: 8px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: var(--transparent-white-3);
+        color: var(--light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        cursor: help;
+        font-style: normal
+    }
+
+    .tooltip {
+        visibility: hidden;
+        width: 220px;
+        background-color: var(--dark);
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -110px;
+        opacity: 0;
+        transition: opacity .3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .3);
+        border: 1px solid var(--transparent-white-2)
+    }
+
+    .info-icon:hover + .tooltip {
+        visibility: visible;
+        opacity: 1
+    }
+
+    .translate-button {
+        padding: .8rem 1.8rem;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color .3s
+    }
+
+    .translate-button:hover {
+        background-color: #e66a4a
+    }
+
+    .output-controls {
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 1rem
+    }
+
+    .copy-button {
+        width: 100%;
+        padding: .8rem 1.2rem;
+        background-color: var(--accent);
+        color: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background-color .3s
+    }
+
+    .copy-button:hover {
+        background-color: #e66a4a
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .7);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn .3s ease-out
+    }
+
+    .modal-content {
+        background: var(--dark);
+        color: var(--light);
+        padding: 2rem;
+        border-radius: 10px;
+        border: 1px solid var(--transparent-white-1);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, .4);
+        width: 90%;
+        max-width: 450px;
+        text-align: center
+    }
+
+    .modal-content h3 {
+        margin-top: 0;
+        color: var(--accent);
+        border-bottom: 1px solid var(--transparent-white-2);
+        padding-bottom: 1rem;
+        margin-bottom: 1rem
+    }
+
+    .modal-content p {
+        line-height: 1.6;
+        font-size: 1rem;
+        margin-bottom: 2rem
+    }
+
+    #closeErrorModalBtn {
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        padding: .8rem 2rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background-color .2s ease
+    }
+
+    #closeErrorModalBtn:hover {
+        opacity: .85
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0
+        }
+        to {
+            opacity: 1
+        }
+    }</style>
+</head>
+<body>
+<div class=header>
+    <div class=header-right>
+        <button class=Btn>
+            <div class=sign>
+                <svg viewBox="0 0 512 512">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                </svg>
+            </div>
+            <div class=text onclick=logout()>Logout</div>
+        </button>
+    </div>
+    <h1>Lainguage</h1>
+    <nav class=nav-bar>
+        <a href=/>Collections</a>
+        <div class=dropdown>
+            <a class=dropdown-toggle>Lain Tool's</a>
+            <div class=dropdown-content>
+                <a href=/aiagents/teacher>Teacher</a>
+                <a href=/aiagents/generator>Generator</a>
+            </div>
+        </div>
+        <a href=/quiz>Quiz</a>
+        <a href=/trainslate class=active>Trainslate</a>
+    </nav>
+</div>
+<main class=translate-container>
+    <div class=panel>
+        <h2>Metniniz</h2>
+        <textarea id=text-input></textarea>
+        <div class=controls>
+            <div class=options-container>
+                <div class=level-selector>
+                    <label for=level>Seviye:</label>
+                    <select id=level>
+                        <option value=A1>A1</option>
+                        <option value=A2>A2</option>
+                        <option value=B1 selected>B1</option>
+                        <option value=B2>B2</option>
+                        <option value=C1>C1</option>
+                        <option value=C2>C2</option>
+                    </select>
+                </div>
+                <div class=academic-selector>
+                    <label>Akademik</label>
+                    <div class=info-container>
+                        <label class=switch>
+                            <input type=checkbox id=academic-checkbox>
+                            <span class=slider></span>
+                        </label>
+                        <i class=info-icon>?</i>
+                        <span class=tooltip>İşaretlendiğinde, çeviri daha resmi ve akademik bir dilde yapılır. Makale, tez ve resmi metinler için idealdir.</span>
+                    </div>
+                </div>
+            </div>
+            <button class=translate-button onclick=handleSmartTranslate()>Çevir</button>
+        </div>
+    </div>
+    <div class=panel>
+        <h2>Gemini Cevabı</h2>
+        <div id=translation-output class=panel-output></div>
+        <div class=output-controls>
+            <button id=copy-btn class=copy-button>Çeviriyi Kopyala</button>
+        </div>
+    </div>
+</main>
+<div id=errorModal class=modal-overlay>
+    <div class=modal-content>
+        <h3>Bir Hata Oluştu</h3>
+        <p id=errorMessageText></p>
+        <button id=closeErrorModalBtn>Tamam</button>
+    </div>
+</div>
+<script>const errorModal = document.getElementById("errorModal"),
+    errorMessageText = document.getElementById("errorMessageText"),
+    closeErrorModalBtn = document.getElementById("closeErrorModalBtn"),
+    copyButton = document.getElementById("copy-btn"), translationOutput = document.getElementById("translation-output"),
+    academicCheckbox = document.getElementById("academic-checkbox"), levelSelect = document.getElementById("level"),
+    levelSelectorContainer = document.querySelector(".level-selector");
+
+function hideErrorModal() {
+    errorModal.style.display = "none"
+}
+
+function showErrorModal(e) {
+    errorMessageText.textContent = e, errorModal.style.display = "flex"
+}
+
+async function handleSmartTranslate() {
+    const e = document.getElementById("text-input").value, t = levelSelect.value, o = academicCheckbox.checked;
+    if (e.trim()) {
+        translationOutput.innerText = "Çevriliyor...";
+        try {
+            const r = await fetch("/api/smart-translate", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({text: e, level: t, academic: o})
+            }), n = await r.json();
+            r.ok ? translationOutput.innerText = n.translatedText : (translationOutput.innerText = "Çeviri başarısız oldu.", showErrorModal(n.message || "Bilinmeyen bir sunucu hatası oluştu."))
+        } catch (e) {
+            console.error("Çeviri hatası:", e), translationOutput.innerText = "Çeviri başarısız oldu.", showErrorModal("Sunucuya bağlanırken bir hata oluştu. Lütfen internet bağlantınızı kontrol edin.")
+        }
+    } else showErrorModal("Lütfen çevirmek için bir metin girin.")
+}
+
+function logout() {
+    fetch("/logout", {method: "POST"}).then((() => {
+        window.location.href = "/login"
+    }))
+}
+
+closeErrorModalBtn.onclick = hideErrorModal, errorModal.addEventListener("click", (e => {
+    e.target === errorModal && hideErrorModal()
+})), academicCheckbox.addEventListener("change", (function () {
+    this.checked ? (levelSelect.value = "C2", levelSelect.disabled = !0, levelSelectorContainer.classList.add("disabled")) : (levelSelect.disabled = !1, levelSelectorContainer.classList.remove("disabled"))
+})), copyButton.addEventListener("click", (() => {
+    const e = translationOutput.innerText;
+    e && !["Çeviri burada görünecek...", "Çeviri başarısız oldu.", "Çevriliyor..."].includes(e) ? navigator.clipboard.writeText(e).then((() => {
+        copyButton.innerText = "Kopyalandı!", setTimeout((() => {
+            copyButton.innerText = "Çeviriyi Kopyala"
+        }), 2e3)
+    })).catch((e => {
+        console.error("Kopyalama başarısız oldu: ", e), showErrorModal("Metin kopyalanamadı. Tarayıcı izinlerini kontrol edin.")
+    })) : showErrorModal("Kopyalanacak geçerli bir çeviri bulunamadı.")
+}))</script>
+</body>
+</html>

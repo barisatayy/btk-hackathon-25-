@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang=tr>
+<head>
+    <meta charset=UTF-8>
+    <title>Lainguage</title>
+    <style>:root {
+        --primary: #6e48aa;
+        --secondary: #9d50bb;
+        --dark: #1a1a2e;
+        --light: #f1f1f1;
+        --accent: #ff7b54;
+        --text-gradient-1: #edeaf3;
+        --text-gradient-2: #8c8c91;
+        --text-gradient-3: #fff;
+        --text-gradient-4: #c9d6ff;
+        --transparent-white-1: rgba(255, 255, 255, 0.1);
+        --transparent-white-2: rgba(255, 255, 255, 0.2);
+        --transparent-white-3: rgba(255, 255, 255, 0.5);
+        --transparent-white-4: rgba(255, 255, 255, 0.7);
+        --transparent-dark-1: rgba(26, 26, 46, 0.6);
+        --transparent-dark-2: rgba(26, 26, 46, 0.8);
+        --transparent-primary-1: rgba(110, 72, 170, 0.8);
+        --transparent-primary-2: rgba(157, 80, 187, 0.9);
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --shadow-accent: rgba(0, 0, 0, 0.2)
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        margin: 0;
+        color: var(--light);
+        overflow-x: hidden;
+        width: 100%
+    }
+
+    ::-webkit-scrollbar {
+        width: .01px
+    }
+
+    .header {
+        grid-column: 1/-1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--transparent-primary-1), var(--transparent-primary-2));
+        z-index: 1000;
+        box-shadow: 0 2px 10px var(--shadow-color);
+        position: relative
+    }
+
+    .header-right {
+        position: absolute;
+        right: 1rem;
+        top: 3rem
+    }
+
+    .nav-bar {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem
+    }
+
+    .nav-bar a {
+        color: #fff;
+        text-decoration: none;
+        padding: .5rem 1rem;
+        border-radius: 20px;
+        transition: all .3s ease;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        height: 40px
+    }
+
+    .nav-bar a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform .3s ease
+    }
+
+    .nav-bar a:hover {
+        background: var(--transparent-white-1)
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background: var(--dark);
+        min-width: 160px;
+        box-shadow: 0 8px 16px var(--shadow-accent);
+        z-index: 1;
+        border-radius: 8px;
+        overflow: hidden
+    }
+
+    .dropdown-content a {
+        color: #fff;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        height: auto
+    }
+
+    .dropdown-content a:hover {
+        background: var(--transparent-primary-1)
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block
+    }
+
+    .dropdown-toggle::after {
+        content: ' ▼';
+        font-size: .8em;
+        margin-left: 4px
+    }
+
+    .nav-bar a:hover::before {
+        transform: scaleX(1);
+        transform-origin: left
+    }
+
+    .nav-bar a.active {
+        background: var(--transparent-white-2)
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        background: linear-gradient(to right, var(--text-gradient-3), var(--text-gradient-4));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: flex;
+        align-items: center;
+        gap: 1rem
+    }
+
+    .word-pool {
+        padding: 2rem;
+        height: calc(100vh - 80px);
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: auto
+    }
+
+    #kelime-form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem
+    }
+
+    input[type=text] {
+        padding: 1rem;
+        width: 100%;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, .1);
+        color: #fff;
+        backdrop-filter: blur(5px);
+        transition: all .3s ease
+    }
+
+    .bas1 {
+        text-align: center;
+        background: linear-gradient(to right, var(--text-gradient-1), var(--text-gradient-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent
+    }
+
+    input[type=text]:focus {
+        outline: 0;
+        background: rgba(255, 255, 255, .2);
+        box-shadow: 0 0 0 2px var(--accent)
+    }
+
+    input::placeholder {
+        color: var(--transparent-white-3)
+    }
+
+    .kelime-kutu {
+        background: var(--transparent-dark-1);
+        border: 1px solid var(--transparent-white-1);
+        margin: .5rem 0;
+        width: 100%;
+        max-width: 400px;
+        padding: .8rem 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px var(--shadow-color);
+        transition: all .3s ease;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+        font-size: .95rem
+    }
+
+    .kelime-kutu:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px var(--shadow-accent);
+        border-color: var(--transparent-white-2)
+    }
+
+    .kelime-ceviri {
+        margin-top: .5rem;
+        font-size: .9rem;
+        color: var(--transparent-white-4);
+        display: none;
+        padding-top: .5rem;
+        border-top: 1px solid var(--transparent-white-1)
+    }
+
+    .aktif .kelime-ceviri {
+        display: block
+    }
+
+    .addButton {
+        position: relative;
+        border: 2px dashed rgba(255, 255, 255, .5);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all .3s ease;
+        margin: 1rem auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .1)
+    }
+
+    .addButton:hover {
+        background: rgba(255, 255, 255, .2);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+        border-color: rgba(255, 255, 255, .8)
+    }
+
+    .plus-icon {
+        font-size: 2.5rem;
+        font-weight: 300;
+        color: #fff;
+        transition: transform .3s ease
+    }
+
+    .addButton:hover .plus-icon {
+        transform: rotate(90deg)
+    }
+
+    .tooltip {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, .7);
+        color: #fff;
+        padding: .3rem .8rem;
+        border-radius: 20px;
+        font-size: .8rem;
+        opacity: 0;
+        transition: opacity .3s ease;
+        white-space: nowrap
+    }
+
+    .addButton:hover .tooltip {
+        opacity: 1
+    }
+
+    .add-collection-container {
+        position: relative;
+        display: inline-block
+    }
+
+    .collection-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--transparent-dark-2);
+        border-radius: 8px;
+        padding: .5rem 0;
+        width: 200px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+        display: none;
+        z-index: 1000;
+        backdrop-filter: blur(5px);
+        border: 1px solid var(--transparent-white-1)
+    }
+
+    .collection-menu.show {
+        display: block
+    }
+
+    .menu-option {
+        padding: .8rem 1rem;
+        color: #fff;
+        cursor: pointer;
+        transition: all .2s ease
+    }
+
+    .menu-option:hover {
+        background: var(--transparent-primary-1)
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .7);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center
+    }
+
+    .modal-content {
+        background: var(--transparent-dark-2);
+        padding: 2rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--transparent-white-2);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .3)
+    }
+
+    .modal-title {
+        margin-top: 0;
+        color: #fff;
+        text-align: center
+    }
+
+    .modal-input {
+        width: 92% !important;
+        height: .5rem;
+        padding: 1rem;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, .1);
+        border: 1px solid var(--transparent-white-1);
+        border-radius: 8px;
+        color: #fff
+    }
+
+    .modal-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end
+    }
+
+    .modal-button {
+        padding: .8rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all .3s ease
+    }
+
+    .modal-button.primary {
+        background: var(--accent);
+        color: #fff
+    }
+
+    .modal-button.secondary {
+        background: 0 0;
+        color: var(--transparent-white-4);
+        border: 1px solid var(--transparent-white-2)
+    }
+
+    .modal-button:hover {
+        opacity: .9;
+        transform: translateY(-2px)
+    }
+
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--transparent-dark-2);
+        color: #fff;
+        padding: .8rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+        display: none;
+        z-index: 3000;
+        backdrop-filter: blur(5px);
+        border: 1px solid var(--transparent-white-1);
+        animation: fadeIn .3s ease
+    }
+
+    .list-container {
+        margin-top: 2rem;
+        padding: 1rem;
+        border: 1px solid rgba(255, 255, 255, .2);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .05);
+        text-align: center;
+        width: 80%;
+        max-width: 100%;
+        height: fit-content;
+        margin-left: auto;
+        margin-right: auto
+    }
+
+    .Btn {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition-duration: .3s;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, .199);
+        background-color: #ff4141
+    }
+
+    .sign {
+        width: 100%;
+        transition-duration: .3s;
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+
+    .sign svg {
+        width: 17px
+    }
+
+    .sign svg path {
+        fill: white
+    }
+
+    .Btn:hover {
+        width: 150px;
+        border-radius: 40px;
+        transition-duration: .3s
+    }
+
+    .Btn:hover .sign {
+        width: 30%;
+        transition-duration: .3s;
+        padding-left: 20px
+    }
+
+    .text {
+        position: absolute;
+        left: 100%;
+        transform: translateX(0);
+        width: auto;
+        opacity: 0;
+        color: #fff;
+        font-size: 1.2em;
+        font-weight: 600;
+        transition-duration: .3s;
+        white-space: nowrap
+    }
+
+    .Btn:hover .text {
+        left: 30%;
+        width: auto;
+        opacity: 1;
+        transform: translateX(0);
+        padding-right: 15px
+    }
+
+    .Btn:active {
+        transform: translate(2px, 2px)
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px)
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+    }
+
+    .collection-box {
+        position: relative;
+        overflow: hidden
+    }
+
+    .collection-controls {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        display: flex;
+        gap: 5px;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity .3s ease
+    }
+
+    .collection-box:hover .collection-controls {
+        opacity: 1
+    }
+
+    .delete-btn, .rename-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: none;
+        background: var(--transparent-white-1);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all .2s ease;
+        padding: 0
+    }
+
+    .rename-btn:hover {
+        background: var(--transparent-primary-1);
+        transform: scale(1.1)
+    }
+
+    .delete-btn:hover {
+        background: #e74c3c;
+        transform: scale(1.1)
+    }
+
+    .delete-btn svg, .rename-btn svg {
+        stroke: white;
+        width: 16px;
+        height: 16px
+    }</style>
+</head>
+<body>
+<div class=header>
+    <div class=header-right>
+        <button class=Btn>
+            <div class=sign>
+                <svg viewBox="0 0 512 512">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                </svg>
+            </div>
+            <div class=text onclick=logout()>Logout</div>
+        </button>
+    </div>
+    <h1>Lainguage</h1>
+    <nav class=nav-bar>
+        <a href=/ class=active>Collections</a>
+        <div class=dropdown>
+            <a class=dropdown-toggle>Lain Tool's</a>
+            <div class=dropdown-content>
+                <a href=/aiagents/teacher>Teacher</a>
+                <a href=/aiagents/generator>Generator</a>
+            </div>
+        </div>
+        <a href=/quiz>Quiz</a>
+        <a href=/trainslate>Trainslate</a>
+    </nav>
+</div>
+<div class=word-pool>
+    <style>.collections-container {
+        min-height: 10vh;
+        min-width: 10%;
+        max-width: fit-content;
+        max-height: fit-content;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, .2);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .05);
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center
+    }
+
+    .collection-box {
+        background: var(--transparent-dark-1);
+        border: 1px solid var(--transparent-white-1);
+        border-radius: 10px;
+        padding: 1rem;
+        width: 190px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all .3s ease;
+        backdrop-filter: blur(5px)
+    }
+
+    .collection-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px var(--shadow-accent);
+        border-color: var(--transparent-white-2)
+    }
+
+    .collection-name {
+        font-size: 1.1rem;
+        text-align: center;
+        word-break: break-word
+    }</style>
+    <div class=add-collection-container>
+        <button class=addButton aria-label="Add new collection" onclick=toggleCollectionMenu()>
+            <span class=plus-icon>+</span>
+            <span class=tooltip>Yeni Ekle</span>
+        </button>
+        <div class=collection-menu id=collectionMenu>
+            <div class=menu-option onclick=createNewList()>Yeni Liste Oluştur</div>
+            <div class=menu-option onclick=addFromExisting()>Hazır Listelerden Ekle</div>
+        </div>
+    </div>
+    <div class=modal id=addWordToListModal>
+        <div class=modal-content>
+            <h3 class=modal-title>Listeye Ekle</h3>
+            <p>
+                Kelimeyi: "<span id=wordToAdd style=font-weight:700;color:var(--accent)></span>" hangi listeye eklemek
+                istersiniz?
+            </p>
+            <div class=user-collections-container id=userCollectionsContainer>
+                <p id=loadingMessage style=text-align:center;color:rgba(255,255,255,.7)>Listeler yükleniyor...</p>
+            </div>
+            <div class=modal-buttons>
+                <button class="modal-button secondary" onclick='closeModal("addWordToListModal")'>İptal</button>
+            </div>
+        </div>
+    </div>
+    <div class=collections-container id=collectionsContainer>
+        <p id=noCollectionsMessage style=text-align:center;color:rgba(255,255,255,.7);display:none>Henüz hiç
+            koleksiyonunuz yok. Yeni bir liste oluşturun!</p>
+    </div>
+</div>
+<div class=modal id=newListModal>
+    <div class=modal-content>
+        <h3 class=modal-title>Yeni Liste Adı</h3>
+        <input class=modal-input id=newListName placeholder="Liste adını girin..." onkeypress=handleListInput(event)>
+        <div class=modal-buttons>
+            <button class="modal-button secondary" onclick='closeModal("newListModal")'>İptal</button>
+            <button class="modal-button primary" onclick=confirmNewList()>Oluştur</button>
+        </div>
+    </div>
+</div>
+<div class=modal id=renameModal>
+    <div class=modal-content>
+        <h3 class=modal-title>Listeyi Yeniden Adlandır</h3>
+        <input class=modal-input id=renameListName placeholder="Yeni liste adını girin..."
+               onkeypress='"Enter"===event.key&&document.getElementById("confirmRenameBtn").click()'>
+        <div class=modal-buttons>
+            <button class="modal-button secondary" onclick='closeModal("renameModal")'>İptal</button>
+            <button class="modal-button primary" id=confirmRenameBtn onclick=renameList()>Adı Değiştir</button>
+        </div>
+    </div>
+</div>
+<div class=modal id=deleteModal>
+    <div class=modal-content>
+        <h3 class=modal-title>Listeyi Silmeyi Onayla</h3>
+        <p>
+            <span id=deleteListName style=font-weight:700;color:var(--accent)></span>
+            adlı listeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+        </p>
+        <div class=modal-buttons>
+            <button class="modal-button secondary" onclick='closeModal("deleteModal")'>İptal</button>
+            <button class="modal-button primary" id=confirmDeleteBtn style=background-color:#e74c3c>Sil</button>
+        </div>
+    </div>
+</div>
+<div class=modal id=addFromExistingModal>
+    <div class=modal-content>
+        <h3 class=modal-title>Hazır Listelerden Seç</h3>
+        <div id=mainListsContainer style=max-height:300px;overflow-y:auto;margin-bottom:1rem>
+            <p id=noMainListsMessage style=text-align:center;color:rgba(255,255,255,.7);padding:1rem;display:none>Hazır
+                liste bulunamadı.</p>
+        </div>
+        <div class=modal-buttons>
+            <button class="modal-button secondary" onclick=closeAddFromExistingModal()>İptal</button>
+        </div>
+    </div>
+</div>
+<div class=notification id=notification></div>
+<script>function showNotification(e, t = !1) {
+    const n = document.getElementById("notification");
+    n.textContent = e, t ? (n.style.color = "rgba(255, 64, 129, 0.9)", n.style.backgroundColor = "var(--transparent-dark-2)") : (n.style.backgroundColor = "rgba(76, 175, 80, 0.9)", n.style.color = ""), n.style.display = "block", setTimeout((() => {
+        n.style.display = "none"
+    }), 3e3)
+}
+
+function closeModal(e) {
+    const t = document.getElementById(e);
+    t && (t.style.display = "none", "newListModal" === e && (document.getElementById("newListName").value = ""))
+}
+
+function closeAddFromExistingModal() {
+    var e = document.getElementById("addFromExistingModal");
+    e && (e.style.display = "none")
+}
+
+function toggleCollectionMenu() {
+    document.getElementById("collectionMenu").classList.toggle("show")
+}
+
+function createNewList() {
+    document.getElementById("newListModal").style.display = "flex", document.getElementById("newListName").focus(), toggleCollectionMenu()
+}
+
+function confirmNewList() {
+    const e = document.getElementById("newListName").value.trim();
+    e ? fetch("/api/list-ekle", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({listName: e})
+    }).then((e => 409 === e.status ? e.json().then((e => {
+        throw new Error(e.mesaj)
+    })) : e.json())).then((e => {
+        "ok" === e.status ? (closeModal("newListModal"), showNotification(`Liste başarıyla oluşturuldu: ${e.list}`), loadCollections()) : showNotification(`Liste oluşturulurken hata oluştu: ${e.mesaj || "Bilinmeyen Hata"}`, !0)
+    })).catch((e => {
+        console.error("API isteği sırasında hata oluştu:", e), showNotification(e.message || "Sunucuya bağlanırken bir hata oluştu.", !0)
+    })) : showNotification("Lütfen geçerli bir liste adı girin!", !0)
+}
+
+function handleListInput(e) {
+    "Enter" === e.key && confirmNewList()
+}
+
+function loadCollections() {
+    const e = document.getElementById("collectionsContainer");
+    e.innerHTML = "", fetch("/api/get-collections").then((e => {
+        if (!e.ok) throw new Error(`HTTP hatası! Durum: ${e.status}`);
+        return e.json()
+    })).then((t => {
+        const n = document.getElementById("noCollectionsMessage");
+        t.length > 0 ? (t.forEach((t => {
+            const n = document.createElement("div");
+            n.className = "collection-box", n.dataset.listName = t, n.onclick = function (e) {
+                e.target.closest("button") || (window.location.href = `/collection/${t}`)
+            }, n.innerHTML = `\n                            <div class="collection-controls">\n                                <button class="rename-btn" onclick="openRenameModal(event, '${t}')" title="İsmi Değiştir">\n                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>\n                                </button>\n                                <button class="delete-btn" onclick="openDeleteModal(event, '${t}')" title="Listeyi Sil">\n                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>\n                                </button>\n                            </div>\n                            <div class="collection-name">${t}</div>\n                        `, e.appendChild(n)
+        })), n && (n.style.display = "none")) : n && (n.style.display = "block")
+    })).catch((t => {
+        console.error("Koleksiyonlar yüklenirken bir hata oluştu:", t), e.innerHTML = '<p style="text-align: center; color: red;">Koleksiyonlar yüklenirken bir hata oluştu.</p>'
+    }))
+}
+
+function openDeleteModal(e, t) {
+    e.stopPropagation();
+    const n = document.getElementById("deleteModal"), o = document.getElementById("deleteListName"),
+        i = document.getElementById("confirmDeleteBtn");
+    o.textContent = t, i.onclick = function () {
+        deleteList(t), closeModal("deleteModal")
+    }, n.style.display = "flex"
+}
+
+function deleteList(e) {
+    fetch("/api/delete-list", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({listName: e})
+    }).then((e => e.json())).then((e => {
+        "ok" === e.status ? (showNotification(e.message), loadCollections()) : showNotification(e.message, !0)
+    })).catch((e => {
+        console.error("Silme isteği sırasında hata oluştu:", e), showNotification("Sunucuya bağlanırken bir hata oluştu.", !0)
+    }))
+}
+
+function openRenameModal(e, t) {
+    e.stopPropagation();
+    const n = document.getElementById("renameModal"), o = document.getElementById("renameListName"),
+        i = document.getElementById("confirmRenameBtn");
+    o.value = t, i.onclick = function () {
+        renameList(t, o.value)
+    }, n.style.display = "flex", o.focus()
+}
+
+function renameList(e, t) {
+    t && e !== t ? fetch("/api/rename-list", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({oldName: e, newName: t})
+    }).then((e => e.json())).then((e => {
+        "ok" === e.status ? (closeModal("renameModal"), showNotification(e.message), loadCollections()) : showNotification(e.message, !0)
+    })).catch((e => {
+        console.error("İsim değiştirme isteği sırasında hata oluştu:", e), showNotification("Sunucuya bağlanırken bir hata oluştu.", !0)
+    })) : showNotification("Lütfen geçerli ve eski isimden farklı bir ad girin.", !0)
+}
+
+function addFromExisting() {
+    document.getElementById("addFromExistingModal").style.display = "flex", toggleCollectionMenu(), loadMainLists()
+}
+
+function loadMainLists() {
+    const e = document.getElementById("mainListsContainer");
+    e.innerHTML = "", fetch("/api/get-main-lists").then((e => e.json())).then((t => {
+        if (t.length > 0) {
+            t.forEach((t => {
+                const n = document.createElement("div");
+                n.className = "menu-option", n.textContent = t, n.onclick = () => copyMainList(t), e.appendChild(n)
+            }));
+            const n = document.getElementById("noMainListsMessage");
+            n && (n.style.display = "none")
+        } else {
+            const e = document.getElementById("noMainListsMessage");
+            e && (e.style.display = "block")
+        }
+    })).catch((t => {
+        console.error("Hazır listeler yüklenirken hata oluştu:", t), e.innerHTML = '<p style="text-align: center; color: red; padding: 1rem;">Hazır listeler yüklenirken bir hata oluştu.</p>'
+    }))
+}
+
+function logout() {
+    fetch("/logout", {method: "POST"}).then((() => {
+        window.location.href = "/login"
+    }))
+}
+
+function toggleDropdown(e) {
+    e.preventDefault();
+    e.target.closest(".dropdown").querySelector(".dropdown-content").classList.toggle("show")
+}
+
+function copyMainList(e) {
+    fetch("/api/copy-main-list", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({listName: e})
+    }).then((e => 409 === e.status ? e.json().then((e => {
+        throw new Error(e.message)
+    })) : e.json())).then((e => {
+        "ok" === e.status ? (closeModal("addFromExistingModal"), showNotification(e.message), loadCollections()) : showNotification(e.message || "Liste kopyalanırken hata oluştu.", !0)
+    })).catch((e => {
+        console.error("API isteği sırasında hata oluştu:", e), showNotification(e.message || "Sunucuya bağlanırken bir hata oluştu.", !0)
+    }))
+}
+
+document.addEventListener("DOMContentLoaded", (function () {
+    loadCollections()
+}))</script>
+</body>
+</html>

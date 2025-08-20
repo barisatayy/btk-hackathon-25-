@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang=tr>
+<head>
+    <meta charset=UTF-8>
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <title>Lainguage</title>
+    <script src=https://cdn.tailwindcss.com></script>
+    <style>.glass-effect {
+        background: rgba(255, 255, 255, .15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, .18);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .37)
+    }
+
+    .input-glass {
+        background: rgba(255, 255, 255, .1);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, .2)
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px
+    }
+
+    .btn-glow:hover {
+        box-shadow: 0 0 15px rgba(102, 126, 234, .7)
+    }
+
+    .input-focus:focus {
+        box-shadow: 0 0 10px rgba(255, 255, 255, .5);
+        outline: 0
+    }</style>
+</head>
+<body>
+<div class="w-full text-center mb-12">
+    <h1 class="text-4xl font-bold text-white">
+        Lainguage
+    </h1>
+</div>
+<div class="glass-effect p-8 w-full max-w-md">
+    <h1 class="text-3xl font-bold text-white text-center mb-8">Hoş Geldiniz</h1>
+    <form id=loginForm class=space-y-6>
+        <div>
+            <label for=username class="block text-sm font-medium text-white mb-1">Kullanıcı Adı</label>
+            <input id=username name=username maxlength=10 required
+                   class="input-glass input-focus w-full px-4 py-3 rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-300 transition duration-200">
+            <div class="text-xs text-gray-200 mt-1 flex justify-between">
+                <span id=charCount>0/10 karakter</span>
+            </div>
+        </div>
+        <div>
+            <label for=password class="block text-sm font-medium text-white mb-1">Şifre</label>
+            <input type=password id=password name=password maxlength=10 required
+                   class="input-glass input-focus w-full px-4 py-3 rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-blue-300 transition duration-200">
+            <div class="text-xs text-gray-200 mt-1">
+                <span id=passCount>0/10 karakter</span>
+            </div>
+        </div>
+        <button type=submit
+                class="btn-glow w-full bg-white text-indigo-600 py-3 rounded-lg font-semibold hover:bg-indigo-50 transition duration-200 flex items-center justify-center">
+            <svg xmlns=http://www.w3.org/2000/svg class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill=currentColor>
+                <path fill-rule=evenodd
+                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                      clip-rule=evenodd/>
+            </svg>
+            Giriş Yap
+        </button>
+    </form>
+</div>
+<script>document.addEventListener("DOMContentLoaded", (function () {
+    const e = document.getElementById("username"), n = document.getElementById("password"),
+        t = document.getElementById("charCount"), r = document.getElementById("passCount"),
+        a = document.getElementById("loginForm"), o = a.querySelector('button[type="submit"]');
+
+    function l(e, n) {
+        const t = e.value.length;
+        n.textContent = `${t}/10 karakter`, t > 10 && (e.value = e.value.substring(0, 10))
+    }
+
+    e.addEventListener("input", (() => l(e, t))), n.addEventListener("input", (() => l(n, r))), a.addEventListener("submit", (function (t) {
+        t.preventDefault();
+        const r = e.value.trim(), a = n.value;
+        0 !== r.length && 0 !== a.length ? (o.disabled = !0, o.innerHTML = '\n                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">\n                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>\n                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>\n                </svg>\n                Giriş Yapılıyor...\n            ', fetch("/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({username: r, password: a})
+        }).then((e => {
+            if (!e.ok) return e.json().then((e => {
+                alert(`Giriş başarısız: ${e.message}`), o.disabled = !1, o.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">\n                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />\n                        </svg> Giriş Yap'
+            }));
+            window.location.href = "/"
+        })).catch((e => {
+            console.error("Login error:", e), alert("Giriş sırasında bir sorun oluştu. Lütfen tekrar deneyin."), o.disabled = !1, o.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">\n                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />\n                </svg> Giriş Yap'
+        }))) : alert("Lütfen tüm alanları doldurunuz!")
+    }))
+}))</script>
+</body>
+</html>
