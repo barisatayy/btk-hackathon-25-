@@ -8,3 +8,7 @@ BTK Hackathon 2025 yarışmasına Tobi ekibi olarak katıldığımız ingilizce 
 -Translate kısmında akıllı çeviri yapma, seviyeye göre çeviri ve akademik çeviri yapma
 
 Ekip arkadaşlarım Aybüke ve Esra'ya teşekkür ederim.
+
+Login kullanıcı adı ve şifresi:
+admin
+123456
