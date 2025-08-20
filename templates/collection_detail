@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <title>Lainguage</title>
+    <meta charset="UTF-8">
+    <title>{{ collection_name }} listesi</title>
+    <style>
+        :root {
+            --primary: #6e48aa;
+            --secondary: #9d50bb;
+            --dark: #1a1a2e;
+            --light: #f1f1f1;
+            --accent: #ff7b54;
+            --text-gradient-1: #edeaf3;
+            --text-gradient-2: #8c8c91;
+            --text-gradient-3: #fff;
+            --text-gradient-4: #c9d6ff;
+            --transparent-white-1: rgba(255, 255, 255, 0.1);
+            --transparent-white-2: rgba(255, 255, 255, 0.2);
+            --transparent-white-3: rgba(255, 255, 255, 0.5);
+            --transparent-white-4: rgba(255, 255, 255, 0.7);
+            --transparent-dark-1: rgba(26, 26, 46, 0.6);
+            --transparent-dark-2: rgba(26, 26, 46, 0.8);
+            --transparent-primary-1: rgba(110, 72, 170, 0.8);
+            --transparent-primary-2: rgba(157, 80, 187, 0.9);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-accent: rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin: 0;
+            color: var(--light);
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0.01px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--transparent-primary-1), var(--transparent-primary-2));
+            z-index: 1000;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            position: relative;
+        }
+
+        .header-right {
+            position: absolute;
+            right: 1rem;
+            top: 3rem;
+        }
+
+        .nav-bar {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            height: 40px;
+        }
+
+        .nav-bar a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-bar a:hover {
+            background: var(--transparent-white-1);
+        }
+
+        .nav-bar a:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-bar a.active {
+            background: var(--transparent-white-2);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--text-gradient-3), var(--text-gradient-4));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .readonly-message {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-button {
+            background: var(--transparent-white-1);
+            color: white;
+            border: 1px solid var(--transparent-white-2);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .back-button:hover {
+            background: var(--transparent-white-2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow-accent);
+        }
+
+        .kelime-kutu .word-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .kelime-kutu .word-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.2s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .kelime-kutu .word-actions button:hover {
+            transform: scale(1.1);
+        }
+
+        .kelime-kutu .word-actions .delete-btn {
+            color: #ff4d4d;
+        }
+
+        .kelime-kutu {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .back-button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .back-button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .collection-detail-content {
+            flex-grow: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .collection-detail-content h1 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, var(--text-gradient-1), var(--text-gradient-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+        }
+
+        #word-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        #word-form input[type="text"] {
+            padding: 1rem;
+            flex-grow: 1;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        #word-form input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        #word-form input::placeholder {
+            color: var(--transparent-white-3);
+        }
+
+        #word-form button {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #word-form button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        #wordListContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .kelime-kutu {
+            background: var(--transparent-dark-1);
+            border: 1px solid var(--transparent-white-1);
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            font-size: 0.95rem;
+            text-align: left;
+            display: flex; /* İçerikleri yatayda hizala */
+            align-items: flex-start; /* Dikeyde en üste hizala */
+        }
+
+        .kelime-kutu:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow-accent);
+            border-color: var(--transparent-white-2);
+        }
+
+        .word-content {
+            flex-grow: 1;
+            cursor: pointer;
+            padding-right: 1rem;
+        }
+
+        .word-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .word-text {
+            display: block;
+        }
+
+        .kelime-ceviri {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--transparent-white-4);
+            display: none;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--transparent-white-1);
+        }
+
+        .aktif .kelime-ceviri {
+            display: block;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--transparent-dark-2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--transparent-white-1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #5C5C5C;
+            border: 1px solid var(--transparent-white-2);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            color: var(--light);
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .modal-buttons button:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-buttons .confirm-btn {
+            background-color: #ff4d4d; /* Kırmızı */
+            color: white;
+        }
+
+        .modal-buttons .confirm-btn:hover {
+            background-color: #e63946;
+        }
+
+        .modal-buttons .cancel-btn {
+            background-color: var(--transparent-white-1); /* Gri ton */
+            color: white;
+        }
+
+        .modal-buttons .cancel-btn:hover {
+            background-color: var(--transparent-white-2);
+        }
+
+        .Btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition-duration: .3s;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+            background-color: rgb(255, 65, 65);
+        }
+
+        .sign {
+            width: 100%;
+            transition-duration: .3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sign svg {
+            width: 17px;
+        }
+
+        .sign svg path {
+            fill: white;
+        }
+
+        .Btn:hover {
+            width: 150px;
+            border-radius: 40px;
+            transition-duration: .3s;
+        }
+
+        .Btn:hover .sign {
+            width: 30%;
+            transition-duration: .3s;
+            padding-left: 20px;
+        }
+
+        .text {
+            position: absolute;
+            left: 100%; /* Yeni eklenen veya değiştirilen kural */
+            transform: translateX(0%); /* Yeni eklenen veya değiştirilen kural */
+            width: auto; /* Değiştirilen kural */
+            opacity: 0;
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition-duration: .3s;
+            white-space: nowrap; /* Yeni eklenen kural */
+        }
+
+        .Btn:hover .text {
+            left: 30%; /* Yeni kural */
+            width: auto; /* Değiştirilen kural */
+            opacity: 1;
+            transform: translateX(0%); /* Yeni kural */
+            padding-right: 15px;
+        }
+
+        .Btn:active {
+            transform: translate(2px, 2px);
+        }
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: var(--dark);
+            min-width: 160px;
+            box-shadow: 0 8px 16px var(--shadow-accent);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            height: auto;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--transparent-primary-1);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-toggle::after {
+            content: ' ▼';
+            font-size: 0.8em;
+            margin-left: 4px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-right">
+        <button class="Btn">
+            <div class="sign">
+                <svg viewBox="0 0 512 512">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                </svg>
+            </div>
+            <div class="text" onclick=logout()>Logout</div>
+        </button>
+    </div>
+    <h1>Lainguage</h1>
+    <nav class="nav-bar">
+        <a href="/" class="active">Collections</a>
+        <div class="dropdown">
+            <a class="dropdown-toggle">Lain Tool's</a>
+            <div class="dropdown-content">
+                <a href="/aiagents/teacher">Teacher</a>
+                <a href="/aiagents/generator">Generator</a>
+            </div>
+        </div>
+        <a href="/quiz">Quiz</a>
+        <a href="/trainslate">Trainslate</a>
+    </nav>
+</div>
+
+<div class="collection-detail-content">
+    <h1 class="bas1">{{ collection_name }} listesi</h1>
+    <hr style="width: 100%; height: 1px; background-color: white; margin-bottom: 2rem; max-width: 500px;">
+
+    <button class="back-button" onclick="goBackToCollections()" aria-label="Back to collections" data-tooltip="Back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+    </button>
+    <br>
+
+    {% if is_main_list %}
+    {% else %}
+    <div id="word-form">
+        <input type="text" id="wordInput" placeholder="Kelime veya cümle ekle..." onkeypress="handleWordInput(event)"
+               maxlength="100">
+        <button onclick="addWordToCollection()">Ekle</button>
+    </div>
+    {% endif %}
+
+    <div id="wordListContainer">
+        <p id="noWordsMessage" style="text-align: center; color: rgba(255,255,255,0.7); display: none;">Bu koleksiyonda
+            henüz kelime yok. İlk kelimenizi ekleyin!</p>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Kelimeyi Sil</h3>
+        <p><b>"<span id="deleteWordText"></span>"</b> kelimesini silmek istediğinize emin misiniz?</p>
+        <div class="modal-buttons">
+            <button class="cancel-btn" onclick="closeModal('deleteModal')">İptal</button>
+            <button class="confirm-btn" onclick="confirmDeleteWord()">Sil</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const collectionName = "{{ collection_name }}";
+    const isMainList = "{{ is_main_list }}" === "True";
+    let activeWord = null; // Silinecek veya düzenlenecek kelimeyi tutar
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadCollectionWords(collectionName);
+    });
+
+    function loadCollectionWords(name) {
+        const wordListContainer = document.getElementById('wordListContainer');
+        wordListContainer.innerHTML = '';
+
+        fetch(`/api/get-collection-words/${name}`)
+            .then(response => response.json())
+            .then(words => {
+                if (words.length > 0) {
+                    words.forEach(wordData => {
+                        appendWordToDOM(wordData.original, wordData.translation, isMainList);
+                    });
+                    const noWordsMessage = document.getElementById('noWordsMessage');
+                    if (noWordsMessage) noWordsMessage.style.display = 'none';
+                } else {
+                    const noWordsMessage = document.getElementById('noWordsMessage');
+                    if (noWordsMessage) {
+                        noWordsMessage.style.display = 'block';
+                    } else {
+                        const p = document.createElement('p');
+                        p.id = 'noWordsMessage';
+                        p.style.cssText = "text-align: center; color: rgba(255,255,255,0.7);";
+                        p.textContent = 'Bu koleksiyonda henüz kelime yok. İlk kelimenizi ekleyin!';
+                        wordListContainer.appendChild(p);
+                        p.style.display = 'block';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Kelimeler yüklenirken hata oluştu:', error);
+                wordListContainer.innerHTML = '<p style="text-align: center; color: red;">Kelimeler yüklenirken bir hata oluştu.</p>';
+            });
+    }
+
+    function handleWordInput(event) {
+        if (event.key === 'Enter') {
+            addWordToCollection();
+        }
+    }
+
+    function addWordToCollection() {
+        const wordInput = document.getElementById('wordInput');
+        const originalWord = wordInput.value.trim();
+        if (!originalWord) {
+            showNotification("Lütfen bir kelime veya cümle girin!", true);
+            return;
+        }
+        const tempTranslation = "Çeviriliyor...";
+        appendWordToDOM(originalWord, tempTranslation, isMainList, true);
+
+        fetch('/api/add-word-to-collection', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({collectionName: collectionName, originalWord: originalWord}),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification(`"${data.originalWord}" başarıyla eklendi!`, false);
+                    loadCollectionWords(collectionName);
+                } else {
+                    showNotification(`Kelime eklenirken hata oluştu: ${data.message}`, true);
+                }
+            })
+            .catch(error => {
+                console.error('Kelime ekleme API isteği sırasında hata:', error);
+                showNotification('Kelime eklenirken sunucu hatası oluştu.', true);
+            })
+            .finally(() => {
+                wordInput.value = '';
+            });
+    }
+
+    function appendWordToDOM(original, translation, isMainList, isTemporary = false) {
+        const wordListContainer = document.getElementById('wordListContainer');
+        const kelimeKutusu = document.createElement('div');
+        kelimeKutusu.className = 'kelime-kutu';
+        if (isTemporary) {
+            kelimeKutusu.id = 'temp-word-box-' + Date.now();
+        }
+
+        const wordContentDiv = document.createElement('div');
+        wordContentDiv.className = 'word-content';
+        wordContentDiv.onclick = (e) => {
+            if (!e.target.closest('.word-actions')) { // Butonlara basılmadıysa
+                kelimeKutusu.classList.toggle('aktif');
+            }
+        };
+
+        const wordTextSpan = document.createElement('span');
+        wordTextSpan.className = 'word-text';
+        wordTextSpan.textContent = original;
+
+        const cevirisiDiv = document.createElement('div');
+        cevirisiDiv.className = 'kelime-ceviri';
+        cevirisiDiv.textContent = translation;
+
+        wordContentDiv.appendChild(wordTextSpan);
+        wordContentDiv.appendChild(cevirisiDiv);
+        kelimeKutusu.appendChild(wordContentDiv);
+
+        if (!isMainList) {
+            const wordActionsDiv = document.createElement('div');
+            wordActionsDiv.className = 'word-actions';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '🗑️';
+            deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                openDeleteModal(original);
+            };
+
+            wordActionsDiv.appendChild(deleteBtn);
+            kelimeKutusu.appendChild(wordActionsDiv);
+        }
+        wordListContainer.prepend(kelimeKutusu);
+    }
+
+    // MODAL Fonksiyonları
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+    }
+
+    // Silme için modal aç
+    function openDeleteModal(word) {
+        activeWord = word;
+        document.getElementById('deleteWordText').textContent = word;
+        openModal('deleteModal');
+    }
+
+    // Silme işlemini onayla
+    function confirmDeleteWord() {
+        if (!activeWord) return;
+        fetch('/api/delete-word-from-collection', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({collectionName: collectionName, wordToDelete: activeWord})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    showNotification(data.message, false);
+                    loadCollectionWords(collectionName);
+                } else {
+                    showNotification(`Hata: ${data.message}`, true);
+                }
+                closeModal('deleteModal');
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                showNotification('Kelime silinirken bir hata oluştu.', true);
+                closeModal('deleteModal');
+            });
+    }
+
+    function showNotification(message, isError) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        if (isError) {
+            notification.style.backgroundColor = 'rgba(255, 64, 129, 0.9)';
+            notification.style.color = 'white';
+        } else {
+            notification.style.backgroundColor = 'rgba(76, 175, 80, 0.9)';
+            notification.style.color = 'white';
+        }
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    function goBackToCollections() {
+        window.location.href = "/";
+    }
+
+    function logout() {
+        fetch('/logout', {method: 'POST'})
+            .then(() => {
+                window.location.href = '/login';
+            });
+    }
+</script>
+<div class="notification" id="notification"></div>
+</body>
+
+</html>
